@@ -11,12 +11,11 @@ L.Control.Zoomslider = L.Control.extend({
 
     this._map = map;
 
-		this._createButton('+', 'Zoom in', className + '-in'
+		this._zoomInButton = this._createButton('+', 'Zoom in', className + '-in'
 						   , container, this._zoomIn , this);
 		this._createSlider(className + '-slider', container, map);
-		this._createButton('-', 'Zoom out', className + '-out'
+		this._zoomOutButton = this._createButton('-', 'Zoom out', className + '-out'
 						   , container, this._zoomOut, this);
-
 
 		this._map.on('zoomend', this._snapToSliderValue, this);
 
@@ -119,6 +118,7 @@ L.Control.Zoomslider = L.Control.extend({
 	},
 
 	_snapToSliderValue: function(sliderValue) {
+		this._updateDisabled();
 		if(this._knob) {
 			sliderValue = isNaN(sliderValue)
 				? this._getSliderValue()
@@ -136,6 +136,22 @@ L.Control.Zoomslider = L.Control.extend({
 	},
 	_getSliderValue: function(){
 		return this._toSliderValue(this._map.getZoom());
+	},
+
+	_updateDisabled: function () {
+		console.log('Got here');
+		var map = this._map,
+			className = 'leaflet-control-zoomslider-disabled';
+
+		L.DomUtil.removeClass(this._zoomInButton, className);
+		L.DomUtil.removeClass(this._zoomOutButton, className);
+
+		if (map._zoom === map.getMinZoom()) {
+			L.DomUtil.addClass(this._zoomOutButton, className);
+		}
+		if (map._zoom === map.getMaxZoom()) {
+			L.DomUtil.addClass(this._zoomInButton, className);
+		}
 	}
 });
 
