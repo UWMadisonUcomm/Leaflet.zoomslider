@@ -139,7 +139,6 @@ L.Control.Zoomslider = L.Control.extend({
 	},
 
 	_updateDisabled: function () {
-		console.log('Got here');
 		var map = this._map,
 			className = 'leaflet-control-zoomslider-disabled';
 
