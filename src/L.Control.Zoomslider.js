@@ -17,14 +17,28 @@ L.Control.Zoomslider = L.Control.extend({
 		this._zoomOutButton = this._createButton('-', 'Zoom out', className + '-out'
 						   , container, this._zoomOut, this);
 
-		this._map.on('zoomend', this._snapToSliderValue, this);
+		map.on('zoomend', this._snapToSliderValue, this);
+		map.on('layeradd layerremove', this._refresh, this);
 
-		//this._snapToSliderValue();
+		// TODO: map.whenReady in 0.5
+		if(map._loaded){
+			this._snapToSliderValue();
+		} else {
+			map.on('load', this._snapToSliderValue, this);
+		}
+
 		return container;
 	},
 
 	onRemove: function(map){
 		map.off('zoomend', this._snapToSliderValue);
+		map.off('layeradd layerremove', this._refresh);
+	},
+
+	_refresh: function(){
+		this._map
+			.removeControl(this)
+			.addControl(this);
 	},
 
 	_createSlider: function (className, container, map) {
