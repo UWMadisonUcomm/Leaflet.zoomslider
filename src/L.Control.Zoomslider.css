@@ -81,6 +81,9 @@
 .leaflet-touch .leaflet-control-zoomslider {
   border-radius: 10px;
   }
+.leaflet-control-zoomslider-slider-knob {
+  width:20px;
+  }
 .leaflet-touch .leaflet-control-zoomslider a {
   width: 30px;
   height: 30px;
